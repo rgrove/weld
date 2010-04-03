@@ -13,9 +13,12 @@ class Weld
     # TODO: handle exceptions
     @config      = YAML::load_file(config_file)
     @config_file = config_file
+    @component_cache = {}
   end
 
   def component(name)
+    return @component_cache[name.to_sym] if @component_cache.has_key?(name.to_sym)
+
     unless definition = @config['components'][name]
       raise ComponentNotFoundError, "Component not found: #{name}"
     end
