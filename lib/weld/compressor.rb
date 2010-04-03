@@ -1,6 +1,6 @@
 require 'open3'
 
-class Weld; class Compressor
+class Weld::Compressor
   autoload :Yui, 'weld/compressor/yui'
 
   attr_reader :options, :type
@@ -13,4 +13,4 @@ class Weld; class Compressor
   def compress(input)
   end
 
-end; end
+end
