@@ -1,0 +1,40 @@
+#
+# This is a simple (but complete) example of a Weld config file.
+#
+---
+compressors:
+  css:
+    name: yui
+    options:
+      jar: /usr/local/bin/yuicompressor.jar
+
+  js:
+    name: yui
+    options:
+      jar: /usr/local/bin/yuicompressor.jar
+
+sourcePaths:
+  - ../public/js
+  - ../public/css
+
+components:
+  yui-3.1.0:
+    js:
+      - 'http://yui.yahooapis.com/3.1.0/build/yui/yui.js'
+      - 'http://yui.yahooapis.com/3.1.0/build/oop/oop-min.js'
+      - 'http://yui.yahooapis.com/3.1.0/build/event-custom/event-custom-min.js'
+      - 'http://yui.yahooapis.com/3.1.0/build/event/event-min.js'
+      - 'http://yui.yahooapis.com/3.1.0/build/dom/dom-min.js'
+      - 'http://yui.yahooapis.com/3.1.0/build/node/node-min.js'
+
+  my-awesome-website:
+    requires:
+      - yui-3.1.0-core
+
+    css:
+      - my-awesome-website.css
+      - so-awesome-it-hurts.css
+
+    js:
+      - my-awesome-website.js
+      - some-more-awesome-stuff.js

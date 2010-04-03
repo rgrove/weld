@@ -1,0 +1,8 @@
+= Weld
+
+Weld combines and minifies CSS and JavaScript files at runtime and build time.
+
+== Status
+
+It's working, but not quite finished yet. Stay tuned (or feel free to play
+around if you're brave).
