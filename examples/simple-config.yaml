@@ -29,7 +29,7 @@ components:
 
   my-awesome-website:
     requires:
-      - yui-3.1.0-core
+      - yui-3.1.0
 
     css:
       - my-awesome-website.css
