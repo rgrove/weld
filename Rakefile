@@ -21,6 +21,7 @@ gemspec = Gem::Specification.new do |s|
   s.require_path          = 'lib'
   s.required_ruby_version = '>= 1.8.6'
 
+  s.add_dependency('aws-s3',  '~> 0.6')
   s.add_dependency('sinatra', '~> 1.0')
   s.add_dependency('trollop', '~> 1.13')
 

@@ -1,63 +1,40 @@
 #!/usr/bin/env ruby
 
 require 'rubygems'
-require 'trollop'
 require 'weld'
 
-options = Trollop.options do
-  version "#{Weld::APP_NAME} #{Weld::APP_VERSION}\n" << Weld::APP_COPYRIGHT
-  banner <<-EOS
-Weld combines and minifies CSS and JavaScript files at runtime and build time.
+cli = Weld::CLI.new
 
-Usage:
-  weld [options] <component> [<component> ...]
+begin
+  cli.components.each do |name|
+    cli.info "Welding #{name}"
 
-Options:
-EOS
+    component = cli.weld.component(name)
+    suffix    = Time.now.strftime('-%Y%m%d%H%M')
 
-  opt :config,     "Use the specified config file.", :short => '-c', :default => './weld.yaml'
-  opt :no_minify,  "Don't perform any minification.", :short => :none
-  opt :output_dir, "Write welded files to the specified directory.", :short => '-o', :default => './'
-  opt :type,       "Only weld components of the specified type ('css' or 'js').", :short => '-t', :type => :string
-end
-
-if options[:type_given] && !['css', 'js'].include?(options[:type])
-  abort "Error: Unsupported component type: #{options[:type]}\n" <<
-      "Try --help for help."
-end
-
-weld = Weld.new(options[:config])
-
-components = ARGV.length > 0 ? ARGV : @weld.config['components'] || []
-type       = options[:type].to_sym if options[:type_given]
-
-components.each do |name|
-  puts "Welding #{name}"
-
-  component = weld.component(name)
-  suffix    = Time.now.strftime('-%Y%m%d%H%M')
-
-  if type
-    next if component.method(type).call.empty?
-
-    filename = "#{File.join(options[:output_dir], name)}#{suffix}.#{type}"
-
-    File.open(filename, 'w') do |file|
-      puts "--> #{filename}"
-      file.write(options[:no_minify] ? component.merge(type) : component.compress(type))
-    end
-  else
-    [:css, :js].each do |type|
+    cli.types.each do |type|
       next if component.method(type).call.empty?
 
-      filename = "#{File.join(options[:output_dir], name)}#{suffix}.#{type}"
+      filename  = "#{name}#{suffix}.#{type}"
+      content   = cli.options[:no_minify] ? component.merge(type) : component.compress(type)
 
-      File.open(filename, 'w') do |file|
-        puts "--> #{filename}"
-        file.write(options[:no_minify] ? component.merge(type) : component.compress(type))
+      if cli.options[:push]
+        cdn_url = cli.cdn_push(filename, type, content)
+        cli.info "--> #{cdn_url}"
+      else
+        full_path = File.join(cli.options[:output_dir], filename)
+
+        File.open(full_path, 'w') do |file|
+          cli.info "--> #{full_path}"
+          file.write(content)
+        end
       end
     end
   end
 
-  puts
+# rescue => ex
+#   cli.error ex.message
+#   exit(1)
 end
+
+puts

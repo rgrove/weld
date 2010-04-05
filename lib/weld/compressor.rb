@@ -12,5 +12,4 @@ class Weld::Compressor
 
   def compress(input)
   end
-
 end

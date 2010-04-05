@@ -6,11 +6,13 @@ end
 
 require 'weld/cache'
 require 'weld/component'
-require 'weld/compressor'
 require 'weld/version'
 
 class Weld
-  autoload :Server, 'weld/server'
+  autoload :CDN,        'weld/cdn'
+  autoload :CLI,        'weld/cli'
+  autoload :Compressor, 'weld/compressor'
+  autoload :Server,     'weld/server'
 
   attr_reader :cache, :config, :config_file
 
@@ -59,6 +61,7 @@ class Weld
   class Error < StandardError; end
   class ComponentNotFoundError < Error; end
   class CompressorError < Error; end
+  class ConfigError < Error; end
   class FileNotFoundError < Error; end
   class UnsupportedFileTypeError < Error; end
 end
