@@ -2,6 +2,27 @@
 # This is a simple (but complete) example of a Weld config file.
 #
 ---
+
+# Weld can automatically push files to a CDN. Currently, Amazon S3 support is
+# built in.
+cdn:
+  type: s3
+  options:
+    access_key_id: 'abc'
+    secret_access_key: '123'
+
+    bucket: my-amazon-s3-bucket
+
+    gzip: true
+
+    prefix:
+      css: css/
+      js: js/
+
+    url_base: 'http://my-amazon-s3-bucket.s3.amazonaws.com/'
+
+# Weld has built in support for YUI Compressor (CSS and JS) and Google Closure
+# Compiler (JS only), although you'll need to provide your own jars.
 compressors:
   css:
     name: yui
@@ -13,10 +34,28 @@ compressors:
     options:
       jar: /usr/local/bin/yuicompressor.jar
 
+  # js:
+  #   name: closure
+  #   options:
+  #     jar: /usr/local/bin/compiler.jar
+
+# List of local paths that should be searched (in order) for CSS and JS files
+# referenced by components.
 sourcePaths:
   - ../public/js
   - ../public/css
 
+# A component is just a group of CSS and/or JS files, which may exist either on
+# the local filesystem or at a remote URL. Components can require other
+# components, which allows you to create a modular dependency hierarchy.
+#
+# During development, the Weld Sinatra app can be used (and easily mixed into
+# your own Rack apps) to serve concatenated components in real-time, either
+# compressed or uncompressed, for fast and easy development and debugging.
+#
+# When you're ready to do a production release, the Weld command-line tool will
+# concatenate, compress, and optionally push one or more components to a CDN in
+# a single step.
 components:
   yui-3.1.0:
     js:
