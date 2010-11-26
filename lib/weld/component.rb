@@ -65,6 +65,9 @@ class Weld::Component
     else
       File.read(filename)
     end
+
+  rescue => e
+    raise Weld::FileNotFoundError, "#{e}: #{filename}"
   end
 
   def resolve_filename(filename)

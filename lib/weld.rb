@@ -4,6 +4,9 @@ class Weld
   HOME_DIR = ENV['WELD_HOME'] || File.join(File.expand_path('~/'), '.weld')
 end
 
+$:.unshift(File.dirname(File.expand_path(__FILE__)))
+$:.uniq!
+
 require 'weld/cache'
 require 'weld/component'
 require 'weld/version'

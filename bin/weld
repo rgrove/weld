@@ -32,9 +32,9 @@ begin
     end
   end
 
-# rescue => ex
-#   cli.error ex.message
-#   exit(1)
+rescue => ex
+  cli.error ex.message
+  exit(1)
 end
 
 puts

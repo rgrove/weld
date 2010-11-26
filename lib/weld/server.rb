@@ -11,10 +11,14 @@ class Weld::Server < Sinatra::Base
     content_type(type == :css ? 'text/css' : 'application/javascript',
         :charset => 'utf-8')
 
-    if no_minify
-      @weld.component(name).merge(type)
-    else
-      @weld.component(name).compress(type)
+    begin
+      if no_minify
+        @weld.component(name).merge(type)
+      else
+        @weld.component(name).compress(type)
+      end
+    rescue Weld::FileNotFoundError => e
+      raise Sinatra::NotFound
     end
   end
 
