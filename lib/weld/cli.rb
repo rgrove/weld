@@ -7,7 +7,7 @@ class Weld::CLI
     parse_args
 
     @weld         = Weld.new(@options[:config])
-    @components ||= @weld.config['components']
+    @components ||= @weld.config['components'].keys
   end
 
   def cdn_push(filename, type, content)
@@ -48,16 +48,17 @@ class Weld::CLI
 #{Weld::APP_NAME} combines and minifies CSS and JavaScript files at runtime and build time.
 
 Usage:
-  weld [options] <component> [<component> ...]
+  weld [options] [<component> ...]
 
 Options:
 EOS
 
-      opt :config,     "Use the specified config file.", :short => '-c', :default => './weld.yaml'
-      opt :no_minify,  "Don't perform any minification.", :short => :none
-      opt :output_dir, "Write welded files to the specified directory.", :short => '-o', :default => './'
-      opt :push,       "Push welded files to the configured CDN instead of saving them locally.", :short => '-p'
-      opt :type,       "Only weld components of the specified type ('css' or 'js').", :short => '-t', :type => :string
+      opt :config,       "Use the specified config file.", :short => '-c', :default => './weld.yaml'
+      opt :no_minify,    "Don't perform any minification.", :short => :none
+      opt :no_timestamp, "Don't append a timestamp to welded filenames.", :short => :none
+      opt :output_dir,   "Write welded files to the specified directory.", :short => '-o', :default => './'
+      opt :push,         "Push welded files to the configured CDN instead of saving them locally.", :short => '-p'
+      opt :type,         "Only weld components of the specified type ('css' or 'js').", :short => '-t', :type => :string
     end
 
     if @options[:type_given] && !['css', 'js'].include?(@options[:type])
@@ -65,7 +66,7 @@ EOS
           "Try --help for help."
     end
 
-    @components = ARGV.length > 0 ? ARGV.dup : nil
+    @components = ARGV.dup if ARGV.length > 0
     @types      = @options[:type_given] ? [@options[:type].to_sym] : [:css, :js]
 
     @options

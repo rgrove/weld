@@ -10,7 +10,7 @@ begin
     cli.info "Welding #{name}"
 
     component = cli.weld.component(name)
-    suffix    = Time.now.strftime('-%Y%m%d%H%M')
+    suffix    = cli.options[:no_timestamp] ? '' : Time.now.strftime('-%Y%m%d%H%M')
 
     cli.types.each do |type|
       next if component.method(type).call.empty?
