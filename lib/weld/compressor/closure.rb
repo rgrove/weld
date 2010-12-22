@@ -1,6 +1,8 @@
 class Weld::Compressor::Closure < Weld::Compressor
   def initialize(type, options = {})
-    super(type, options)
+    super(type, {
+      'jar' => File.join(Weld::LIB_DIR, 'vendor', 'closure', 'compiler.jar')
+    }.merge(options))
 
     @args = options['args'] || []
 

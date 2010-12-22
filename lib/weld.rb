@@ -1,7 +1,9 @@
 require 'fileutils'
+require 'yaml'
 
 class Weld
   HOME_DIR = ENV['WELD_HOME'] || File.join(File.expand_path('~/'), '.weld')
+  LIB_DIR  = File.expand_path(File.dirname(__FILE__))
 end
 
 $:.unshift(File.dirname(File.expand_path(__FILE__)))

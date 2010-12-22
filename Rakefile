@@ -19,7 +19,7 @@ gemspec = Gem::Specification.new do |s|
 
   s.executables           = ['weld']
   s.require_path          = 'lib'
-  s.required_ruby_version = '>= 1.8.6'
+  s.required_ruby_version = '>= 1.8.7'
 
   s.add_dependency('aws-s3',  '~> 0.6')
   s.add_dependency('sinatra', '~> 1.1.0')
@@ -30,7 +30,8 @@ gemspec = Gem::Specification.new do |s|
     'README.rdoc',
     'bin/weld',
     'examples/*.yaml',
-    'lib/**/*.rb'
+    'lib/**/*.rb',
+    'lib/vendor/**/*'
   ]
 end
 
@@ -45,6 +46,4 @@ Rake::RDocTask.new do |rd|
   rd.rdoc_dir = 'doc'
 
   rd.rdoc_files.include('README.rdoc', 'lib/**/*.rb')
-
-  rd.options << '--line-numbers' << '--inline-source'
 end
